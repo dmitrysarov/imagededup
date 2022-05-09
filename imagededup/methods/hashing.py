@@ -3,7 +3,7 @@ import sys
 from pathlib import PurePath, Path
 from typing import Dict, List, Optional
 
-import pywt
+# import pywt
 import numpy as np
 from scipy.fftpack import dct
 
@@ -581,70 +581,70 @@ class DHash(Hashing):
         return hash_mat
 
 
-class WHash(Hashing):
-    """
-    Inherits from Hashing base class and implements wavelet hashing. (Implementation reference:
-    https://fullstackml.com/wavelet-image-hash-in-python-3504fdd282b5)
-
-    Offers all the functionality mentioned in hashing class.
-
-    Example:
-    ```
-    # Wavelet hash for images
-    from imagededup.methods import WHash
-    whasher = WHash()
-    wavelet_hash = whasher.encode_image(image_file = 'path/to/image.jpg')
-    OR
-    wavelet_hash = whasher.encode_image(image_array = <numpy image array>)
-    OR
-    wavelet_hashes = whasher.encode_images(image_dir = 'path/to/directory')  # for a directory of images
-
-    # Finding duplicates:
-    from imagededup.methods import WHash
-    whasher = WHash()
-    duplicates = whasher.find_duplicates(image_dir='path/to/directory', max_distance_threshold=15, scores=True)
-    OR
-    duplicates = whasher.find_duplicates(encoding_map=encoding_map, max_distance_threshold=15, scores=True)
-
-    # Finding duplicates to return a single list of duplicates in the image collection
-    from imagededup.methods import WHash
-    whasher = WHash()
-    files_to_remove = whasher.find_duplicates_to_remove(image_dir='path/to/images/directory',
-                      max_distance_threshold=15)
-    OR
-    files_to_remove = whasher.find_duplicates_to_remove(encoding_map=encoding_map, max_distance_threshold=15)
-    ```
-    """
-
-    def __init__(self, verbose: bool = True) -> None:
-        """
-        Initialize wavelet hashing class.
-
-        Args:
-            verbose: Display progress bar if True else disable it. Default value is True.
-        """
-        super().__init__(verbose)
-        self.target_size = (256, 256)
-        self.__wavelet_func = 'haar'
-
-    def _hash_algo(self, image_array):
-        """
-        Get wavelet hash of the input image.
-
-        Args:
-            image_array: numpy array that corresponds to the image.
-
-        Returns:
-            A string representing the wavelet hash of the image.
-        """
-        # decomposition level set to 5 to get 8 by 8 hash matrix
-        image_array = image_array / 255
-        coeffs = pywt.wavedec2(data=image_array, wavelet=self.__wavelet_func, level=5)
-        LL_coeff = coeffs[0]
-
-        # median of LL coefficients
-        median_coef_val = np.median(np.ndarray.flatten(LL_coeff))
-
-        # return mask of all coefficients greater than mean of coefficients
-        hash_mat = LL_coeff >= median_coef_val
-        return hash_mat
+# class WHash(Hashing):
+#     """
+#     Inherits from Hashing base class and implements wavelet hashing. (Implementation reference:
+#     https://fullstackml.com/wavelet-image-hash-in-python-3504fdd282b5)
+#
+#     Offers all the functionality mentioned in hashing class.
+#
+#     Example:
+#     ```
+#     # Wavelet hash for images
+#     from imagededup.methods import WHash
+#     whasher = WHash()
+#     wavelet_hash = whasher.encode_image(image_file = 'path/to/image.jpg')
+#     OR
+#     wavelet_hash = whasher.encode_image(image_array = <numpy image array>)
+#     OR
+#     wavelet_hashes = whasher.encode_images(image_dir = 'path/to/directory')  # for a directory of images
+#
+#     # Finding duplicates:
+#     from imagededup.methods import WHash
+#     whasher = WHash()
+#     duplicates = whasher.find_duplicates(image_dir='path/to/directory', max_distance_threshold=15, scores=True)
+#     OR
+#     duplicates = whasher.find_duplicates(encoding_map=encoding_map, max_distance_threshold=15, scores=True)
+#
+#     # Finding duplicates to return a single list of duplicates in the image collection
+#     from imagededup.methods import WHash
+#     whasher = WHash()
+#     files_to_remove = whasher.find_duplicates_to_remove(image_dir='path/to/images/directory',
+#                       max_distance_threshold=15)
+#     OR
+#     files_to_remove = whasher.find_duplicates_to_remove(encoding_map=encoding_map, max_distance_threshold=15)
+#     ```
+#     """
+#
+#     def __init__(self, verbose: bool = True) -> None:
+#         """
+#         Initialize wavelet hashing class.
+#
+#         Args:
+#             verbose: Display progress bar if True else disable it. Default value is True.
+#         """
+#         super().__init__(verbose)
+#         self.target_size = (256, 256)
+#         self.__wavelet_func = 'haar'
+#
+#     def _hash_algo(self, image_array):
+#         """
+#         Get wavelet hash of the input image.
+#
+#         Args:
+#             image_array: numpy array that corresponds to the image.
+#
+#         Returns:
+#             A string representing the wavelet hash of the image.
+#         """
+#         # decomposition level set to 5 to get 8 by 8 hash matrix
+#         image_array = image_array / 255
+#         coeffs = pywt.wavedec2(data=image_array, wavelet=self.__wavelet_func, level=5)
+#         LL_coeff = coeffs[0]
+#
+#         # median of LL coefficients
+#         median_coef_val = np.median(np.ndarray.flatten(LL_coeff))
+#
+#         # return mask of all coefficients greater than mean of coefficients
+#         hash_mat = LL_coeff >= median_coef_val
+#         return hash_mat
