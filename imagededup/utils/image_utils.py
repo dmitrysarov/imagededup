@@ -10,6 +10,9 @@ from imagededup.utils.logger import return_logger
 IMG_FORMATS = ['JPEG', 'PNG', 'BMP', 'MPO', 'PPM', 'TIFF', 'GIF']
 logger = return_logger(__name__)
 
+import warnings
+warnings.simplefilter('error')
+
 
 def _check_3_dim(image_arr_shape: Tuple) -> None:
     """
