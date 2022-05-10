@@ -10,9 +10,6 @@ from imagededup.utils.logger import return_logger
 IMG_FORMATS = ['JPEG', 'PNG', 'BMP', 'MPO', 'PPM', 'TIFF', 'GIF']
 logger = return_logger(__name__)
 
-import warnings
-warnings.simplefilter('error')
-
 
 def _check_3_dim(image_arr_shape: Tuple) -> None:
     """
@@ -142,7 +139,7 @@ def load_image(
         img_formats: List of allowed image formats that can be loaded.
     """
     try:
-        img = Image.open(image_file)
+        img = Image.open(str(image_file))
 
         # validate image format
         if img.format not in img_formats:
